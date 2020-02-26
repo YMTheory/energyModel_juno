@@ -1,2 +1,2 @@
 # energyModel_juno
-nonlinearity and energy resolution model
+### Codes Repository for JUNO nonlinearity and energy resolution model
