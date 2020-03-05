@@ -57,11 +57,14 @@ Simplification of Problem:
 
 ## 通过预期单个Event的totalPE分布并统计大样本的单个Event建立gamma的Resolution Model？
 
-<img src="/Users/yumiao/Documents/Works/github/energyModel_juno/resolution/md_fig/SecondarySample.png" style="zoom:40%;" />
+<img src="./md_fig/SecondarySample.png" style="zoom:40%;" />
 
 在这个计算里采取了分bin，10keV/per bin. 假设每一种沉积过程最后的totalPE是高斯分布，例如统计了1000个事例，就能得到1000个高斯分布的mean（利用电子非线性曲线计算或从模拟里得到）和sigma（从模拟里拿到对应Ebin的电子的分辨率）。 然后做MC抽样，每个分布等概率进行抽样得到一个totalPE值。多次抽样后观察totalPE的分布。可以看到这种方法会高估分辨率：
 
-<img src="/Users/yumiao/Documents/Works/github/energyModel_juno/resolution/md_fig/1MeVgamma_resl.png" style="zoom:40%;" />
+<img src="./md_fig/1MeVgamma_resl.png" style="zoom:40%;" />
 
+猜测：观察primary e-的分布，尤其对于低能gamma来说，较大部分primary e-的都是<<10keV，因此通过这样的分bin方式会高估很多粒子的能量～ 造成对非线性的估计变差（模型计算的非线性值要小于模拟结果）；如果不分bin直接取每个primary e-的能量值，就需要对非线性函数进行差值～  better？
 
+偏大的能量分辨率是由于高估了低能primary电子的非线性，尤其是最小的一个bin，如果用线性插值会高估很多，所以直接用binned data去近似这个bin里所有电子的非线性。sigma则使用了线性插值（包括最小的一个bin），下面是估计的结果:
 
+<img src="./md_fig/GammaResol.png" style="zoom:50%;" />
