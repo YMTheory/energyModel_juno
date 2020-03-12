@@ -4,11 +4,12 @@ void draw_resolution()
     gStyle->SetOptStat(1111);
 
     ifstream in;
-    in.open("./resolution_gamma_cerenkov.txt");
+    //in.open("./resolution_gamma_cerenkov.txt");
     //in.open("./resolution_nocerenkov_electron.txt");
+    in.open("./positron/positron_resolution.txt");
     string line;
 
-    const Int_t num = 5;
+    const Int_t num = 6;
     double totpe[num]; double totpe_err[num]; double sigma[num]; double sigma_err[num];
 
     int count = 0;
@@ -20,8 +21,8 @@ void draw_resolution()
 
     double energe_scale[num]; double resol[num]; double resol_err[num]; double energe_scale_err[num];
     for(int i=0; i<num; i++){
-        energe_scale[i] = totpe[i] / totpe[0] * 1.;
-        energe_scale_err[i] = totpe_err[i] / totpe[0] *1;
+        energe_scale[i] = totpe[i] / totpe[0] * 1.522;
+        energe_scale_err[i] = totpe_err[i] / totpe[0] *1.522;
         resol[i] = sigma[i] / totpe[i];
         resol_err[i] = TMath::Sqrt(sigma_err[i]*sigma_err[i]/totpe[i]/totpe[i] + sigma[i]*sigma[i]*totpe_err[i]*totpe_err[i]/pow(totpe[i],4));
         //cout << i << "," <<energe_scale[i] <<","<< resol[i] << endl;
@@ -29,7 +30,7 @@ void draw_resolution()
         //cout << energe_scale[i] << " " << energe_scale_err[i] <<" "<< resol[i] << " " << resol_err[i] << endl;
     }
 
-    TF1* func_resol = new TF1("func_resol", "TMath::Sqrt([0]*[0]/x+[1]*[1]+[2]*[2]/x/x)", 0, 10);
+    TF1* func_resol = new TF1("func_resol", "TMath::Sqrt([0]*[0]/x+[1]*[1]+[2]*[2]/x/x)", 0, 12);
     //func_resol->SetParameter(2,0.);
 
     TGraphErrors* tge = new TGraphErrors(num, energe_scale, resol, energe_scale_err, resol_err);
